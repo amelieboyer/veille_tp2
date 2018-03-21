@@ -7,7 +7,19 @@
 	"nom" : "Last name",
 	"prénom" : "First name",
 	"téléphone" : "Phone Number",
-	"courriel" : "Email"
+	"courriel" : "Email",
+	"gestion de membre" : "Membership management",
+ 	"Projet Veille Node.js" : "Node Project.js",
+	"cours" : "Course",
+	"Programmation et veille technologique" : "Programmation and technology",
+	"Remise" : "Due date",
+	"14 février 2018" : "Febuary 14th 2018",
+	"Projet utilisant Node.js, Express et MongoDB pour développer une application Web de gestion de membres" : "Project using Node.js, Express and MongoDB to develop a web application for a membership management",
+	"Programmation et veille technologique" : "Programming and technology",
+	"Le site officiel de Node.js" : "Node.js Official Website",
+	"Fondation Node.js" : "Node.js Fondation",
+	"Fondation Linux" : "Linux Fondation",
+	"Télécharger mongoDB" : "Download mongoDB"
 
 
 }

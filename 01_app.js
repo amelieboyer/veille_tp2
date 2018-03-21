@@ -1,3 +1,4 @@
+"use strict"
 const express = require('express');
 const fs = require('fs');
 const util = require("util");
@@ -79,7 +80,7 @@ app.get('/', function (req, res) {
 
 
 
-//////////////////////////////////////////  Route Adresse
+//////////////////////////////////////////////////////ADRESSE
 app.get('/adresse', function (req, res) {
    var cursor = db.collection('adresse')
                 .find().toArray(function(err, resultat){
@@ -88,11 +89,14 @@ app.get('/adresse', function (req, res) {
   });
 })
 
-//////////////////////////////////////////  Route Rechercher
+///////////////////////////////////////////////////////RECHERCHER
 app.post('/rechercher',  (req, res) => {
 
 })
-////////////////////////////////////////// Route /ajouter
+
+
+
+//////////////////////////////////////////////////////AJOUTER
 app.post('/ajax_ajouter', (req, res) => {
 console.log('route /ajouter')	
  db.collection('adresse').save(req.body, (err, result) => {
@@ -103,7 +107,7 @@ console.log('route /ajouter')
  })
 })
 
-////////////////////////////////////////  Route /modifier
+/////////////////////////////////////////////////////MODIFIER
 app.post('/ajax_modifier', (req, res) => {
  req.body._id = ObjectID(req.body._id)
 
@@ -116,21 +120,26 @@ app.post('/ajax_modifier', (req, res) => {
 })
 
 
-////////////////////////////////////////  Route /detruire
-app.get('/ajax_detruire', (req, res) => {
+////////////////////////////////////////////////////////DETRUIRE
+app.post('/ajax_detruire', (req, res) => {
+
  console.log('route /detruire')
  // console.log('util = ' + util.inspect(req.params));	
- var id = req.params.id
+ var id = req.body._id
  console.log(id)
- db.collection('adresse').findOneAndDelete({"_id": ObjectID(req.params.id)}, (err, resultat) => {
+ db.collection('adresse').findOneAndDelete({"_id": ObjectID(id)}, (err, resultat) => {
 
-if (err) return console.log(err)
-res.send(JSON.stringify(req.body));
+	if (err) return console.log(err)
+		console.log(resultat)
+
+	res.send(JSON.stringify(req.body));
+
  })
+
 })
 
 
-///////////////////////////////////////////////////////////   Route /trier
+///////////////////////////////////////////////////////////TRIER
 app.get('/trier/:cle/:ordre', (req, res) => {
 
  let cle = req.params.cle
@@ -144,7 +153,7 @@ app.get('/trier/:cle/:ordre', (req, res) => {
 }) 
 
 
-/////////////////////////////////////////////////////////  Route /peupler
+/////////////////////////////////////////////////////////VIDER
 app.get('/vider', (req, res) => {
 
 	let cursor = db.collection('adresse').drop((err, res)=>{
@@ -155,7 +164,29 @@ app.get('/vider', (req, res) => {
 	res.redirect('/adresse')
 })
 
-//////////////////////////////////////////////////////// Route /clavardage
+////////////////////////////////////////////////////////////PEUPLER
+app.get('/peupler', function (req, res) {
+
+	let peuplement = peupler()
+	console.log(peuplement)
+
+ 	//Preparer l'output en format JSON
+	console.log('la route /traiter_get')
+
+	for(let i=0; i<peuplement.length; i++){
+
+		 db.collection('adresse').save(peuplement[i], (err, result) => {
+			 if (err) return console.log(err)
+			 console.log('sauvegarder dans la BD')
+		 })
+	}
+
+res.redirect('/membres')
+
+})
+
+
+////////////////////////////////////////////////////////CLAVARDAGE
 
 
 app.get('/chat', (req, res) => {
