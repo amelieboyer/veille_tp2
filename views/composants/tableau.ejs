@@ -1,0 +1,190 @@
+<%
+    let objOrdre = {
+        _id : 'asc',
+        nom : 'asc',        
+        prenom : 'asc',
+        telephone : 'asc',
+        courriel : 'asc'
+    }
+    
+    if (typeof cle !== 'undefined'  && cle)
+        {
+            objOrdre[cle] = ordre
+        }
+%>
+
+
+<table class="tableau">
+    <tr>
+        <th><a href="/trier/_id/<%= objOrdre._id %>">_id<i class="fas fa-<%= (objOrdre._id=='asc'?'sort-up': 'sort-down') %>"></i></a></th>
+        <th><a href="/trier/nom/<%= objOrdre.nom %>"><%=  __('nom') %><i class="fas fa-<%= (objOrdre.nom=='asc'?'sort-up': 'sort-down') %>"></i></a></th>
+        <th><a href="/trier/prenom/<%= objOrdre.prenom %>"><%=  __('prénom') %><i class="fas fa-<%= (objOrdre.prenom=='asc'?'sort-up': 'sort-down') %>"></i></a></th>        
+        <th><a href="/trier/telephone/<%= objOrdre.telephone %>"><%=  __('téléphone') %><i class="fas fa-<%= (objOrdre.telephone=='asc'?'sort-up': 'sort-down') %>"></i></a></th>  
+        <th><a href="/trier/courriel/<%= objOrdre.courriel %>"><%=  __('courriel') %><i class="fas fa-<%= (objOrdre.courriel=='asc'?'sort-up': 'sort-down') %>"></i></a></th>
+        <th><a id='btnAjouter'>Ajouter</a></th>
+    </tr>
+    <%  for (elm of adresses) {%>
+    <tr>
+        <td><%= elm._id %></td>
+        <td contenteditable='true'><%= elm.nom %></td>
+        <td contenteditable='true'><%= elm.prenom %></td>
+        <td contenteditable='true'><%= elm.telephone %></td>                
+        <td contenteditable='true'><%= elm.courriel %></td>    
+        <td><a class="detruire" href="/detruire/<%= elm._id %>"><i class="fas fa-trash-alt" aria-hidden="true"></i></a></td>
+        <td><a class='modifier' href="#"><i class="far fa-save" aria-hidden="true"></i></a></td>
+    </tr>
+    <% } %>
+</table>
+<button id='testAJAX'>test AJAX</button>
+
+<script type="text/javascript">
+(function(){
+    
+
+         let elmModifier = document.querySelectorAll('.modifier')
+
+            for(let i=0; i<elmModifier.length; i++){
+
+                 elmModifier[i].addEventListener('click', ()=>{
+
+                    xhr = new XMLHttpRequest();
+                    xhr.open('POST', "/ajax_modifier", true);
+
+                    let elmTr = elmModifier[i].parentElement.parentElement
+                    let _id = elmTr.querySelector('td:nth-child(1)').innerHTML
+                    let nom = elmTr.querySelector('td:nth-child(2)').innerHTML
+                    let prenom = elmTr.querySelector('td:nth-child(3)').innerHTML
+                    let telephone = elmTr.querySelector('td:nth-child(4)').innerHTML
+                    let courriel = elmTr.querySelector('td:nth-child(5)').innerHTML
+
+                    data = {
+                        "nom" : nom,
+                        "prenom" : prenom,
+                        "telephone" : telephone,
+                        "courriel" : courriel,
+                        "_id" : _id
+                    }
+
+                    console.log(data)
+                    sData = JSON.stringify(data);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.send(sData);
+                    xhr.addEventListener("readystatechange", traiterRequest, false);
+                })
+
+
+            }
+
+
+        let elmAjouter = document.getElementById('btnAjouter')
+
+        console.log(elmAjouter)
+
+         elmAjouter.addEventListener('click', ()=>{
+
+                     xhr = new XMLHttpRequest();
+                    xhr.open('POST', "/ajax_ajouter", true);
+
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.send();
+                    xhr.addEventListener("readystatechange", traiterRequestAjout, false);
+            
+
+
+
+         })
+
+        let elmDetruire = document.querySelectorAll('.detruire')
+
+         for(let i=0; i<elmDetruire.length; i++){
+
+                 elmDetruire[i].addEventListener('click', ()=>{
+
+                    xhr = new XMLHttpRequest();
+                    xhr.open('POST', "/ajax_detruire", true);
+
+                    let elmTr = elmModifier[i].parentElement.parentElement
+                    let _id = elmTr.querySelector('td:nth-child(1)').innerHTML
+                    let nom = elmTr.querySelector('td:nth-child(2)').innerHTML
+                    let prenom = elmTr.querySelector('td:nth-child(3)').innerHTML
+                    let telephone = elmTr.querySelector('td:nth-child(4)').innerHTML
+                    let courriel = elmTr.querySelector('td:nth-child(5)').innerHTML
+
+                    data = {
+                        "nom" : nom,
+                        "prenom" : prenom,
+                        "telephone" : telephone,
+                        "courriel" : courriel,
+                        "_id" : _id
+                    }
+
+                    console.log(data)
+                    sData = JSON.stringify(data);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.send(sData);
+                    xhr.addEventListener("readystatechange", traiterRequest, false);
+                })
+
+
+            }
+
+
+
+
+
+        function traiterRequest(e)
+        {
+             console.log("xhr.readyState = " + xhr.readyState)
+             console.log("xhr.status = " + xhr.status)
+
+             if(xhr.readyState == 4 && xhr.status == 200)
+             {
+                 console.log('ajax fonctionne')
+                 var response = JSON.parse(xhr.responseText);
+                 console.log(response)
+                 console.log("response._id = " + response._id)
+                 console.log(xhr.responseText);
+
+            // elmLigne.style.backgroundColor = "#0f0"
+             }
+        }
+
+        function traiterRequestAjout(e){
+
+            let elmTr =   document.createElement('tr')
+
+             console.log("xhr.readyState = " + xhr.readyState)
+             console.log("xhr.status = " + xhr.status)
+
+             if(xhr.readyState == 4 && xhr.status == 200)
+             {
+                 console.log('ajax fonctionne')
+                 var response = JSON.parse(xhr.responseText);
+                 console.log(response)
+                 console.log("response._id = " + response._id)
+                 console.log(xhr.responseText);
+             }
+
+
+            let monTableau = document.getElementsByClassName("tableau")[0];
+
+            let sLigne = '<td>' + i + '</td>' + '<td contenteditable="true" placeholder="Nom"></td>' + '<td contenteditable="true" placeholder="Prénom"></td>' + '<td contenteditable="true" placeholder="Téléphone"></td>'
+              + '<td contenteditable="true" placeholder="Courriel"></td>'                        
+  
+            elmTr.innerHTML = sLigne
+            let elmTh = document.createElement('th')
+            elmTr.appendChild(elmTh)
+
+            //elmButton.addEventListener('click', detruire, false)
+
+
+
+        }
+
+
+})()
+
+
+
+</script>
+
