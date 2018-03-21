@@ -4,6 +4,7 @@
 	"vider" :  "Delete",
 	"adresse" : "Adress",
 	"clavardage" : "Chat",
+	"peupler" : "Populate",
 	"nom" : "Last name",
 	"prénom" : "First name",
 	"téléphone" : "Phone Number",

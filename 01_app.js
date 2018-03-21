@@ -7,6 +7,11 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('./mes_modules/chat_socket').listen(server);
 ////////////////////////////////////////////////////////////////////
+
+
+
+const peupler = require('./mes_modules/peupler')
+
 const bodyParser= require('body-parser');
 const MongoClient = require('mongodb').MongoClient; // le pilote MongoDB
 const ObjectID = require('mongodb').ObjectID;
@@ -181,7 +186,7 @@ app.get('/peupler', function (req, res) {
 		 })
 	}
 
-res.redirect('/membres')
+res.redirect('/adresse')
 
 })
 
