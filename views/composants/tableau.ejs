@@ -21,7 +21,7 @@
         <th><a href="/trier/prenom/<%= objOrdre.prenom %>"><%=  __('prénom') %><i class="fas fa-<%= (objOrdre.prenom=='asc'?'sort-up': 'sort-down') %>"></i></a></th>        
         <th><a href="/trier/telephone/<%= objOrdre.telephone %>"><%=  __('téléphone') %><i class="fas fa-<%= (objOrdre.telephone=='asc'?'sort-up': 'sort-down') %>"></i></a></th>  
         <th><a href="/trier/courriel/<%= objOrdre.courriel %>"><%=  __('courriel') %><i class="fas fa-<%= (objOrdre.courriel=='asc'?'sort-up': 'sort-down') %>"></i></a></th>
-        <th><a id='btnAjouter'>Ajouter</a></th>
+        <th><a id='btnAjouter'><%=  __('ajouter') %></a></th>
     </tr>
     <%  for (elm of adresses) {%>
     <tr>
